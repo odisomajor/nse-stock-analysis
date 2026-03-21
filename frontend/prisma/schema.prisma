@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Company {
+  id          Int      @id @default(autoincrement())
+  ticker      String   @unique @db.VarChar(10)
+  name        String   @db.VarChar(255)
+  sector      String?  @db.VarChar(100)
+  description String?
+  website     String?
+
+  stockPrices StockPrice[]
+  news        NewsArticle[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("companies")
+}
+
+model StockPrice {
+  id         Int      @id @default(autoincrement())
+  companyId  Int
+  date       DateTime @db.Date
+  open       Float?
+  high       Float?
+  low        Float?
+  close      Float?
+  volume     Int?
+
+  company    Company  @relation(fields: [companyId], references: [id])
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([companyId])
+  @@index([date])
+  @@map("stock_prices")
+}
+
+model NewsArticle {
+  id          Int      @id @default(autoincrement())
+  companyId   Int
+  title       String   @db.VarChar(255)
+  url         String   @unique
+  source      String?
+  publishedAt DateTime?
+
+  company     Company  @relation(fields: [companyId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([companyId])
+  @@map("news_articles")
+}
