@@ -15,7 +15,7 @@ export default async function Home() {
     select: { date: true }
   });
 
-  let stocks = [];
+  let stocks: any[] = [];
   let latestDate = null;
 
   if (latestDateRecord) {

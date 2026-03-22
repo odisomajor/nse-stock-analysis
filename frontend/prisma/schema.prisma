@@ -11,56 +11,26 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Company {
-  id          Int      @id @default(autoincrement())
-  ticker      String   @unique @db.VarChar(10)
-  name        String   @db.VarChar(255)
-  sector      String?  @db.VarChar(100)
-  description String?
-  website     String?
+model StockData {
+  id              String   @id @default(dbgenerated("gen_random_uuid()"))
+  symbol          String
+  companyName     String?
+  date            DateTime
+  open            Float
+  high            Float
+  low             Float
+  close           Float
+  prevClose       Float
+  change          Float
+  pChange         Float
+  volume          Int
+  deliveryVolume  Int?
+  deliveryPercent Float?
+  vwap            Float
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  stockPrices StockPrice[]
-  news        NewsArticle[]
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("companies")
-}
-
-model StockPrice {
-  id         Int      @id @default(autoincrement())
-  companyId  Int
-  date       DateTime @db.Date
-  open       Float?
-  high       Float?
-  low        Float?
-  close      Float?
-  volume     Int?
-
-  company    Company  @relation(fields: [companyId], references: [id])
-
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@index([companyId])
+  @@unique([symbol, date])
   @@index([date])
-  @@map("stock_prices")
-}
-
-model NewsArticle {
-  id          Int      @id @default(autoincrement())
-  companyId   Int
-  title       String   @db.VarChar(255)
-  url         String   @unique
-  source      String?
-  publishedAt DateTime?
-
-  company     Company  @relation(fields: [companyId], references: [id])
-
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([companyId])
-  @@map("news_articles")
+  @@index([symbol])
 }
