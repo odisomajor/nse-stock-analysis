@@ -9,23 +9,29 @@ const prisma = new PrismaClient();
 export const revalidate = 0;
 
 export default async function Home() {
-  // Fetch the latest trading date available in the database
-  const latestDateRecord = await prisma.stockData.findFirst({
-    orderBy: { date: 'desc' },
-    select: { date: true }
-  });
-
   let stocks: any[] = [];
   let latestDate = null;
+  let dbError = false;
 
-  if (latestDateRecord) {
-    latestDate = latestDateRecord.date;
-    // Fetch top 50 stocks by volume for the latest date
-    stocks = await prisma.stockData.findMany({
-      where: { date: latestDate },
-      orderBy: { volume: 'desc' },
-      take: 50
+  try {
+    // Fetch the latest trading date available in the database      
+    const latestDateRecord = await prisma.stockData.findFirst({     
+      orderBy: { date: 'desc' },
+      select: { date: true }
     });
+
+    if (latestDateRecord) {
+      latestDate = latestDateRecord.date;
+      // Fetch top 50 stocks by volume for the latest date
+      stocks = await prisma.stockData.findMany({
+        where: { date: latestDate },
+        orderBy: { volume: 'desc' },
+        take: 50
+      });
+    }
+  } catch (error) {
+    console.error("Database connection error:", error);
+    dbError = true;
   }
 
   const MOCK_NEWS = [
@@ -75,7 +81,12 @@ export default async function Home() {
                 <span className="text-sm text-gray-500 font-medium">Showing Top 50 by Volume</span>
               </div>
               <div className="divide-y divide-gray-100 max-h-[800px] overflow-y-auto">
-                {stocks.length === 0 ? (
+                {dbError ? (
+                  <div className="p-8 text-center text-red-500">
+                    <p className="font-semibold">Database Connection Error</p>
+                    <p className="text-sm mt-2">Please ensure DATABASE_URL and DIRECT_URL are set in Vercel Environment Variables.</p>
+                  </div>
+                ) : stocks.length === 0 ? (
                   <div className="p-8 text-center text-gray-500">No data available yet. Please run the scraper.</div>
                 ) : (
                   stocks.map((stock) => {
