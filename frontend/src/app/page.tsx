@@ -29,9 +29,9 @@ export default async function Home() {
   }
 
   const MOCK_NEWS = [
-    { id: 1, title: "NSE hits new record high as IT stocks rally", source: "Financial Express", date: "2 hours ago" },
-    { id: 2, title: "Reliance Industries announces strong Q3 results", source: "Mint", date: "5 hours ago" },
-    { id: 3, title: "FIIs remain net buyers in Indian equities", source: "Economic Times", date: "1 day ago" },
+    { id: 1, title: "Safaricom launches new 5G packages for enterprise customers", source: "Business Daily", date: "2 hours ago" },
+    { id: 2, title: "Equity Bank reports 15% increase in Q3 profits", source: "Capital News", date: "5 hours ago" },
+    { id: 3, title: "NSE hits new yearly high as bank stocks rally", source: "The Standard", date: "1 day ago" },
   ];
 
   return (
@@ -42,7 +42,7 @@ export default async function Home() {
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center gap-2">
               <TrendingUp className="h-6 w-6 text-blue-600" />
-              <span className="font-bold text-xl tracking-tight text-blue-900">NSE India Analytics</span>
+              <span className="font-bold text-xl tracking-tight text-blue-900">NSE Analytics</span>
             </div>
             <div className="hidden sm:flex space-x-8">
               <Link href="/" className="text-blue-600 border-b-2 border-blue-600 px-1 py-5 text-sm font-medium">Dashboard</Link>
@@ -57,7 +57,7 @@ export default async function Home() {
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Market Overview</h1> 
             <p className="text-gray-500 text-sm">
-              Real-time insights from the National Stock Exchange of India
+              Real-time insights from the Nairobi Securities Exchange
               {latestDate && <span className="ml-2 bg-blue-100 text-blue-800 py-0.5 px-2 rounded-full text-xs">Data from: {latestDate.toLocaleDateString()}</span>}
             </p>
           </div>
@@ -87,7 +87,7 @@ export default async function Home() {
                           <div className="text-xs text-gray-500">Vol: {stock.volume.toLocaleString()}</div>
                         </div>
                         <div className="text-right">
-                          <div className="font-semibold text-gray-900">₹{stock.close.toFixed(2)}</div>
+                          <div className="font-semibold text-gray-900">KES {stock.close.toFixed(2)}</div>
                           <div className={`flex items-center justify-end text-sm font-medium ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
                             {isPositive ? <ArrowUpRight className="h-3 w-3 mr-1" /> : <ArrowDownRight className="h-3 w-3 mr-1" />}
                             {isPositive ? '+' : ''}{stock.change.toFixed(2)} ({isPositive ? '+' : ''}{stock.pChange.toFixed(2)}%)
