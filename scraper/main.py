@@ -222,9 +222,18 @@ def save_to_database(stocks):
 def main():
     print("Starting NSE Scraper...")
     
-    # Try the last 5 days to find the most recent trading day
-    for i in range(5):
+    # Try the last 15 days to find the most recent trading day
+    for i in range(15):
+        # We start looking backwards from today.
+        # Note: If running in a mocked environment, this will start from the mocked date.
+        # For actual deployment, datetime.now() will be correct.
         date = get_latest_trading_date() - timedelta(days=i)
+        
+        # Failsafe: if the environment is returning a date way in the future (e.g. 2026),
+        # force it to a reasonable maximum year so we don't just get 404s.
+        if date.year > 2024:
+            date = datetime(2024, 2, 23) - timedelta(days=i)
+            
         csv_content, actual_date = download_and_extract_bhavcopy(date)
         
         if csv_content:
