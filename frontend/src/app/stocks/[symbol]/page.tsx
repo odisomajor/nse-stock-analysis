@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { PrismaClient } from '@prisma/client';
 import { ArrowLeft, ArrowUpRight, ArrowDownRight, TrendingUp, Newspaper, BarChart3, Activity } from 'lucide-react';
-import TradingViewWidget from '@/components/TradingViewWidget';
+import StockChart from '@/components/StockChart';
 
 const prisma = new PrismaClient();
 
@@ -117,11 +117,11 @@ export default async function CompanyPage({ params }: { params: { symbol: string
               <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                 <h2 className="font-semibold text-gray-800 flex items-center gap-2">
                   <BarChart3 className="h-4 w-4 text-blue-500" />
-                  Interactive Chart
+                  Price History
                 </h2>
               </div>
-              <div className="h-[500px] w-full border-b border-gray-100">
-                <TradingViewWidget symbol={decodedSymbol} />
+              <div className="p-6">
+                <StockChart data={chartData} />
               </div>
             </div>
 
