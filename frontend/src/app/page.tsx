@@ -92,19 +92,19 @@ export default async function Home() {
                   stocks.map((stock) => {
                     const isPositive = stock.change >= 0;
                     return (
-                      <div key={stock.id} className="p-4 hover:bg-gray-50 transition-colors flex justify-between items-center">
+                      <Link href={`/stocks/${stock.symbol}`} key={stock.id} className="p-4 hover:bg-gray-50 transition-colors flex justify-between items-center cursor-pointer">     
                         <div>
-                          <div className="font-bold text-gray-900">{stock.symbol}</div>
+                          <div className="font-bold text-gray-900 group-hover:text-blue-600">{stock.symbol}</div>
                           <div className="text-xs text-gray-500">Vol: {stock.volume.toLocaleString()}</div>
                         </div>
                         <div className="text-right">
                           <div className="font-semibold text-gray-900">KES {stock.close.toFixed(2)}</div>
                           <div className={`flex items-center justify-end text-sm font-medium ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
-                            {isPositive ? <ArrowUpRight className="h-3 w-3 mr-1" /> : <ArrowDownRight className="h-3 w-3 mr-1" />}
-                            {isPositive ? '+' : ''}{stock.change.toFixed(2)} ({isPositive ? '+' : ''}{stock.pChange.toFixed(2)}%)
+                            {isPositive ? <ArrowUpRight className="h-3 w-3 mr-1" /> : <ArrowDownRight className="h-3 w-3 mr-1" />}  
+                            {isPositive ? '+' : ''}{stock.change.toFixed(2)} ({isPositive ? '+' : ''}{stock.pChange.toFixed(2)}%)   
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     );
                   })
                 )}
