@@ -10,7 +10,10 @@ const prisma = new PrismaClient();
 export const revalidate = 0;
 
 export default async function CompanyPage({ params }: { params: { symbol: string } }) {
-  const { symbol } = params;
+  // Await the params object before destructuring its properties
+  // This is required in newer versions of Next.js for dynamic route parameters
+  const resolvedParams = await params;
+  const { symbol } = resolvedParams;
 
   // Replace URL encoded characters (like %26 for &) back to their original form
   const decodedSymbol = decodeURIComponent(symbol);
