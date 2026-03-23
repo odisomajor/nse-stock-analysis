@@ -12,9 +12,12 @@ export const revalidate = 0;
 export default async function CompanyPage({ params }: { params: { symbol: string } }) {
   const { symbol } = params;
 
+  // Replace URL encoded characters (like %26 for &) back to their original form
+  const decodedSymbol = decodeURIComponent(symbol);
+
   // Fetch all historical data for this symbol to build the chart
   const stockHistory = await prisma.stockData.findMany({
-    where: { symbol: symbol.toUpperCase() },
+    where: { symbol: decodedSymbol.toUpperCase() },
     orderBy: { date: 'asc' },
   });
 
@@ -24,7 +27,7 @@ export default async function CompanyPage({ params }: { params: { symbol: string
         <div className="bg-white p-8 rounded-xl shadow-sm text-center max-w-md">
           <Activity className="h-12 w-12 text-gray-400 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-gray-900 mb-2">Company Not Found</h2>
-          <p className="text-gray-500 mb-6">We couldn't find any trading data for ticker symbol "{symbol}".</p>
+          <p className="text-gray-500 mb-6">We couldn't find any trading data for ticker symbol "{decodedSymbol}".</p>
           <Link href="/" className="inline-flex items-center text-blue-600 font-medium hover:text-blue-800">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Dashboard
@@ -46,10 +49,10 @@ export default async function CompanyPage({ params }: { params: { symbol: string
 
   // Generate some realistic-looking mock news based on the company symbol
   const MOCK_NEWS = [
-    { id: 1, title: `${symbol} announces strategic expansion plans across East Africa region`, source: "Business Daily", date: "2 hours ago" },
-    { id: 2, title: `Market analysts upgrade ${symbol} to 'Strong Buy' following Q3 performance`, source: "Capital News", date: "1 day ago" },
-    { id: 3, title: `${symbol} CEO discusses future outlook and digital transformation initiatives`, source: "The Standard", date: "2 days ago" },
-    { id: 4, title: `Foreign investors show increased interest in ${symbol} shares`, source: "Reuters", date: "4 days ago" },
+    { id: 1, title: `${decodedSymbol} announces strategic expansion plans across East Africa region`, source: "Business Daily", date: "2 hours ago" },
+    { id: 2, title: `Market analysts upgrade ${decodedSymbol} to 'Strong Buy' following Q3 performance`, source: "Capital News", date: "1 day ago" },
+    { id: 3, title: `${decodedSymbol} CEO discusses future outlook and digital transformation initiatives`, source: "The Standard", date: "2 days ago" },
+    { id: 4, title: `Foreign investors show increased interest in ${decodedSymbol} shares`, source: "Reuters", date: "4 days ago" },
   ];
 
   return (
@@ -81,9 +84,9 @@ export default async function CompanyPage({ params }: { params: { symbol: string
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                {latestData.companyName || symbol}
+                {latestData.companyName || decodedSymbol}
                 <span className="text-sm font-normal px-2 py-1 bg-gray-100 text-gray-600 rounded-md border border-gray-200">
-                  {symbol}
+                  {decodedSymbol}
                 </span>
               </h1>
               <p className="text-gray-500 text-sm mt-1">
