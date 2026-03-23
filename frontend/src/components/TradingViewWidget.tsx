@@ -4,19 +4,21 @@ import { AdvancedRealTimeChart } from "react-ts-tradingview-widgets";
 
 // We use React.memo to prevent unnecessary re-renders of the widget
 const TradingViewWidget = memo(({ symbol }: { symbol: string }) => {
-  // TradingView uses "KE" as the prefix for Nairobi Securities Exchange.
-  // For example, Safaricom is "KE:SCOM" on TradingView.
-  // We need to strip out the "NSE" prefix if it exists in our database, or handle special cases.
+  // It seems TradingView does not have direct coverage for all Nairobi Securities Exchange stocks
+  // using standard prefixes. As a reliable fallback, we will use a global market index 
+  // or default to a major African index so the widget always loads gracefully.
+  // We'll use a placeholder like "INDEX:NSE20" if they support it, or just default to a standard 
+  // emerging markets ETF to ensure the widget never breaks while showing Kenyan stock data outside the widget.
   
-  let tvSymbol = '';
+  // Actually, many users on TradingView use "BAMB" without a prefix, or it's simply not supported.
+  // Let's create a custom TradingView search string, or fallback to an empty chart that doesn't show an error.
   
-  if (symbol === 'NSE') {
-    // The Nairobi Securities Exchange itself
-    tvSymbol = 'KE:NSE';
-  } else {
-    // Other stocks (e.g., BAMB becomes KE:BAMB)
-    tvSymbol = `KE:${symbol}`;
-  }
+  // For the Nairobi Securities Exchange, TradingView data is notoriously sparse.
+  // Let's use the exact symbol without a prefix first, as sometimes TV auto-resolves it.
+  // If we want to prevent the ugly error, we can use a known good emerging market symbol as a placeholder
+  // while keeping the title showing the actual stock.
+  
+  const tvSymbol = symbol; // Trying raw symbol
 
   return (
     <AdvancedRealTimeChart
