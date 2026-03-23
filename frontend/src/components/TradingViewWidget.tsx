@@ -4,10 +4,19 @@ import { AdvancedRealTimeChart } from "react-ts-tradingview-widgets";
 
 // We use React.memo to prevent unnecessary re-renders of the widget
 const TradingViewWidget = memo(({ symbol }: { symbol: string }) => {
-  // Most Kenyan stocks on TradingView are prefixed with NSE: (e.g., NSE:SCOM)
-  // We append .KE if needed, or use the raw symbol depending on the exchange format.
-  // The standard for TradingView for Nairobi is often just the symbol if the exchange is set.
-  const tvSymbol = symbol === 'NSE' ? 'NSE:NSE' : `NSE:${symbol}`;
+  // TradingView uses "KE" as the prefix for Nairobi Securities Exchange.
+  // For example, Safaricom is "KE:SCOM" on TradingView.
+  // We need to strip out the "NSE" prefix if it exists in our database, or handle special cases.
+  
+  let tvSymbol = '';
+  
+  if (symbol === 'NSE') {
+    // The Nairobi Securities Exchange itself
+    tvSymbol = 'KE:NSE';
+  } else {
+    // Other stocks (e.g., BAMB becomes KE:BAMB)
+    tvSymbol = `KE:${symbol}`;
+  }
 
   return (
     <AdvancedRealTimeChart
