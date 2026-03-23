@@ -11,23 +11,83 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Top Nairobi Securities Exchange (Kenya) tickers available on Yahoo Finance
+# Comprehensive list of Nairobi Securities Exchange (Kenya) tickers available on Yahoo Finance
 KENYA_TICKERS = [
-    "SCOM.NR", # Safaricom
-    "EQTY.NR", # Equity Group
-    "KCB.NR",  # KCB Group
-    "EABL.NR", # East African Breweries
-    "COOP.NR", # Co-operative Bank
-    "NCBA.NR", # NCBA Group
-    "BAT.NR",  # BAT Kenya
-    "ABSA.NR", # ABSA Bank Kenya
-    "SCBK.NR", # Standard Chartered Kenya
-    "DTK.NR",  # Diamond Trust Bank
-    "I&M.NR",  # I&M Holdings
-    "KEGN.NR", # KenGen
-    "BAMB.NR", # Bamburi Cement
-    "CTUM.NR", # Centum Investment
-    "NSE.NR",  # Nairobi Securities Exchange
+    # Telecommunications
+    "SCOM.NR", # Safaricom Plc
+
+    # Banking
+    "EQTY.NR", # Equity Group Holdings Plc
+    "KCB.NR",  # KCB Group Plc
+    "COOP.NR", # Co-operative Bank of Kenya Ltd
+    "NCBA.NR", # NCBA Group Plc
+    "ABSA.NR", # Absa Bank Kenya Plc
+    "SCBK.NR", # Standard Chartered Bank Kenya Ltd
+    "DTK.NR",  # Diamond Trust Bank Kenya Ltd
+    "I&M.NR",  # I&M Group Plc
+    "STFC.NR", # Stanbic Holdings Plc
+    "HFCK.NR", # HF Group Plc
+    "BKCC.NR", # BK Group Plc
+
+    # Manufacturing & Allied
+    "EABL.NR", # East African Breweries Plc
+    "BAT.NR",  # British American Tobacco Kenya Plc
+    "BOC.NR",  # BOC Kenya Plc
+    "CARB.NR", # Carbacid Investments Plc
+    "FLR.NR",  # Flame Tree Group Holdings Ltd
+    "KSG.NR",  # Kenya Sweets Ltd (not common, usually others)
+    "EAPC.NR", # East African Portland Cement Co. Ltd
+    "BAMB.NR", # Bamburi Cement Plc
+    "CABL.NR", # Crown Paints Kenya Plc
+
+    # Energy & Petroleum
+    "KEGN.NR", # KenGen Co. Plc
+    "KPLC.NR", # Kenya Power and Lighting Co. Plc
+    "TOTL.NR", # TotalEnergies Marketing Kenya Plc
+    "UMME.NR", # Umeme Ltd
+
+    # Investment
+    "CTUM.NR", # Centum Investment Co. Plc
+    "TCL.NR",  # Trans-Century Plc
+    "OLYM.NR", # Olympia Capital Holdings Ltd
+    "KURV.NR", # Kurwitu Ventures Ltd
+
+    # Investment Services
+    "NSE.NR",  # Nairobi Securities Exchange Plc
+
+    # Insurance
+    "BRIT.NR", # Britam Holdings Plc
+    "CIC.NR",  # CIC Insurance Group Ltd
+    "JUB.NR",  # Jubilee Holdings Ltd
+    "KNRE.NR", # Kenya Reinsurance Corporation Ltd
+    "LIB.NR",  # Liberty Kenya Holdings Ltd
+    "SANC.NR", # Sanlam Kenya Plc
+
+    # Agricultural
+    "EGAD.NR", # Eaagads Ltd
+    "KAPC.NR", # Kakuzi Plc
+    "KUKZ.NR", # Kapchorua Tea Kenya Plc
+    "LIMT.NR", # Limuru Tea Plc
+    "SASN.NR", # Sasini Plc
+    "WTK.NR",  # Williamson Tea Kenya Plc
+
+    # Commercial & Services
+    "DOX.NR",  # Deacons (East Africa) Plc
+    "ECL.NR",  # Express Kenya Plc
+    "LKL.NR",  # Longhorn Publishers Plc
+    "NMG.NR",  # Nation Media Group Plc
+    "SGL.NR",  # Standard Group Plc
+    "TPSE.NR", # TPS Eastern Africa (Serena) Plc
+    "UCHM.NR", # Uchumi Supermarkets Plc
+    "WKL.NR",  # WPP Scangroup Plc
+    "SMER.NR", # Sameer Africa Plc
+
+    # Construction & Allied
+    "ARM.NR",  # ARM Cement Plc
+    
+    # Real Estate Investment Trust
+    "FAHR.NR", # ILAM Fahari I-REIT
+    "ACRW.NR", # Acorn Student Accommodation I-REIT
 ]
 
 def fetch_kenyan_stocks():
