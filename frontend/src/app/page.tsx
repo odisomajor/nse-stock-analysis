@@ -14,20 +14,29 @@ export default async function Home() {
   let dbError = false;
 
   try {
-    // Fetch the latest trading date available in the database      
-    const latestDateRecord = await prisma.stockData.findFirst({     
+    // We just want to fetch all the distinct symbols with their latest date.
+    // However, since we might have slightly different timestamps for each stock in our manual seed,
+    // we'll just get the latest 50 records overall, ordered by date descending.
+    stocks = await prisma.stockData.findMany({
       orderBy: { date: 'desc' },
-      select: { date: true }
+      take: 50
     });
+    
+    // Deduplicate stocks by symbol so we only show the latest entry for each
+    const uniqueStocksMap = new Map();
+    stocks.forEach(stock => {
+      if (!uniqueStocksMap.has(stock.symbol)) {
+        uniqueStocksMap.set(stock.symbol, stock);
+      }
+    });
+    
+    stocks = Array.from(uniqueStocksMap.values());
+    
+    // Sort by volume descending
+    stocks.sort((a, b) => b.volume - a.volume);
 
-    if (latestDateRecord) {
-      latestDate = latestDateRecord.date;
-      // Fetch top 50 stocks by volume for the latest date
-      stocks = await prisma.stockData.findMany({
-        where: { date: latestDate },
-        orderBy: { volume: 'desc' },
-        take: 50
-      });
+    if (stocks.length > 0) {
+      latestDate = stocks[0].date;
     }
   } catch (error) {
     console.error("Database connection error:", error);
